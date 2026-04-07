@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NairaPulse | Master Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .section-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h2 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 0; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; background: #f8f9fa; padding: 12px; color: #666; font-size: 0.9rem; }
+        td { padding: 12px; border-top: 1px solid #eee; font-size: 0.95rem; }
+        
+        .badge { padding: 4px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-paid { background: #d4edda; color: #155724; }
+        
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-pay { background: #28a745; color: white; }
+        .btn-reject { background: #dc3545; color: white; margin-left: 5px; }
+        
+        .loader { text-align: center; padding: 20px; color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h1>Master Admin Dashboard</h1>
+        <button onclick="logout()" style="padding:10px; cursor:pointer;">Logout</button>
+    </div>
+
+    <div class="section-card">
+        <h2>Registered Users</h2>
+        <div id="userLoader" class="loader">Loading Users...</div>
+        <table id="userTable" style="display:none">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Balance</th>
+                    <th>Admin?</th>
+                </tr>
+            </thead>
+            <tbody id="userList"></tbody>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h2>Withdrawal Requests</h2>
+        <div id="withdrawLoader" class="loader">Loading Requests...</div>
+        <table id="withdrawTable" style="display:none">
+    <thead>
+    <tr>
+        <th>User Details</th>
+        <th>Gross (Total)</th>
+        <th>Fee (10%)</th>
+        <th>Net Payout (Pay This)</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+   </thead>
+            <tbody id="withdrawList"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const supabaseClient = supabase.createClient("https://rthpqfyeazputmufqkwd.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0aHBxZnllYXpwdXRtdWZxa3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjU2NDEsImV4cCI6MjA5MDIwMTY0MX0.j0XIfWSqyhnjA3q73hnoLbQOVpVJa_f8xPXb9EsgLGI");
+
+    async function initAdmin() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) window.location.href = "admin_login.html";
+
+        loadUsers();
+        loadWithdrawals();
+    }
+
+    async function loadUsers() {
+        const { data: users, error } = await supabaseClient.from('users').select('*').order('created_at', { ascending: false });
+        if (error) return console.error(error);
+
+        document.getElementById('userLoader').style.display = 'none';
+        document.getElementById('userTable').style.display = 'table';
+        
+        const list = document.getElementById('userList');
+        list.innerHTML = users.map(u => `
+            <tr>
+                <td>${u.first_name} ${u.last_name}</td>
+                <td>${u.email}</td>
+                <td style="font-weight:bold">₦${Number(u.balance).toLocaleString()}</td>
+                <td>${u.is_admin ? '✅ Yes' : 'No'}</td>
+            </tr>
+        `).join('');
+    }
+
+       // Wethdrawal requests are now fetched from a "Smart View" that joins necessary user info for easier admin processing  
+    async function loadWithdrawals() {
+    // We now fetch from our "Smart View" instead of the raw table
+    const { data: withdrawals, error } = await supabaseClient
+        .from('admin_withdrawal_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return console.error("Error loading view:", error.message);
+
+    document.getElementById('withdrawLoader').style.display = 'none';
+    document.getElementById('withdrawTable').style.display = 'table';
+    
+    const list = document.getElementById('withdrawList');
+    list.innerHTML = withdrawals.map(w => {
+        // Calculations for the UI
+        const gross = Number(w.gross_amount);
+        const fee = Number(w.fee);
+        const net = Number(w.net_payout);
+
+        return `
+            <tr>
+                <td>
+                    <b>${w.first_name} ${w.last_name}</b><br>
+                    <small style="color:#666">${w.email}</small>
+                </td>
+                <td>₦${gross.toLocaleString()}</td>
+                <td style="color:#dc3545">-₦${fee.toLocaleString()}</td>
+                <td style="font-weight:bold; color:#28a745">₦${net.toLocaleString()}</td>
+                <td><span class="badge status-${w.status}">${w.status}</span></td>
+                <td>
+                    ${w.status === 'pending' ? `
+                        <button class="btn btn-pay" onclick="process('${w.withdrawal_id}', 'paid')">Pay ₦${net.toLocaleString()}</button>
+                        <button class="btn btn-reject" onclick="process('${w.withdrawal_id}', 'rejected')">Reject</button>
+                    ` : '<small>Completed</small>'}
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+            // Process withdrawal via Supabase Function (which handles balance updates and email notifications)
+   async function process(id, action) {
+    if (!confirm(`Are you sure you want to mark this as ${action}?`)) return;
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    
+    try {
+        const res = await fetch("https://rthpqfyeazputmufqkwd.supabase.co/functions/v1/process-withdrawal", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.access_token}`
+            },
+            // CRITICAL: This must match the Edge Function exactly
+            body: JSON.stringify({ 
+                withdrawalId: id, 
+                action: action 
+            })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            showSuccess(`Request marked as ${action}`);
+            loadWithdrawals(); // Refresh the table
+        } else {
+            // This will tell us EXACTLY what the Edge Function is unhappy about
+            showError(result.error || "Unknown error occurred");
+        }
+    } catch (err) {
+        showError("Network error: " + err.message);
+    }
+}
+        // Logout function
+    async function logout() {
+        await supabaseClient.auth.signOut();
+        window.location.href = "admin_login.html";
+    }
+
+    initAdmin();
+</script>
+<script src="scripts/toast.js"></script>
+</body>
+</html>

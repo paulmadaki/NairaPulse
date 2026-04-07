@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NairaPulse Dashboard</title>
+  <style>
+    /* --- BASIC RESET & BASE STYLES --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* --- NAVIGATION BAR --- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      background: #fff;
+      height: 70px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 70px;
+      width: 70px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    
+
+    /* --- DESKTOP NAV LINKS (Visible on Laptop) --- */
+    #navLinks {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    #navLinks a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    #navLinks a:hover {
+      color: #007bff;
+    }
+
+    /* --- MOBILE UI ELEMENTS (Hidden on Laptop) --- */
+    .menu-btn, .close-btn {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #007bff;
+      background: none;
+      border: none;
+    }
+
+    /* --- MAIN CONTENT CONTAINER --- */
+    .container {
+      max-width: 900px;
+      margin: 100px auto 40px; /* Top margin accounts for fixed nav */
+      padding: 0 20px;
+    }
+
+    /* --- CARD STYLING --- */
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+
+    .card h3 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      border-left: 4px solid #007bff;
+      padding-left: 10px;
+    }
+
+    /* --- STATS GRID --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* --- INFO ROWS --- */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label { font-weight: 600; color: #444; }
+    .info-value { color: #666; }
+
+    /* --- BUTTONS --- */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+
+    button:hover { opacity: 0.85; }
+
+    /* --- RESPONSIVE MOBILE VIEW (768px and below) --- */
+    @media (max-width: 768px) {
+      .menu-btn { display: block; } /* Show hamburger on mobile */
+
+      /* Transform navLinks into a slide-out Sidebar */
+      #navLinks {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hide off-screen */
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        flex-direction: column;
+        padding: 80px 30px;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.4s ease-in-out;
+        z-index: 1001;
+      }
+
+      /* When JS adds the .active class */
+      #navLinks.active {
+        right: 0; /* Slide in */
+      }
+
+      .close-btn {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 25px;
+      }
+
+      #navLinks a {
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid #f4f4f4;
+        font-size: 1.1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr; /* Stack stats on mobile */
+      }
+      
+      .info-row {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="logo-section">
+      <img src="images/my_real_logo.JPG" alt="Logo" class="logo-img">
+      <!--<span style="font-weight: bold; font-size: 1.2rem; color: #007bff;">NairaPulse</span>-->
+    </div>
+
+    <div class="nav-links" id="navLinks">
+      <button class="close-btn" onclick="toggleMenu()">✕</button>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="account.html" style="color: #28a745;">Account</a>
+      <a href="withdrawal-history.html">History</a>
+      <a href="#" onclick="logout()" style="color: #dc3545;">Logout</a>
+    </div>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </nav>
+
+  <div class="container">
+    
+    <div class="card">
+      <h3>Account Summary</h3>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number" id="totalEarned">₦0</div>
+          <div class="stat-label">Total Earned</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="referralCount">0</div>
+          <div class="stat-label">Referrals</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="totalWithdrawn">₦0</div>
+          <div class="stat-label">Withdrawn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Personal Information</h3>
+      <div class="info-row">
+        <span class="info-label">Full Name</span>
+        <span class="info-value" id="fullName">-</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value" id="userEmail">-</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">WhatsApp</span>
+        <span class="info-value" id="userWhatsapp">-</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value" id="userAddress">-</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Member Since</span>
+        <span class="info-value" id="memberSince">-</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Account Statistics</h3>
+      <div class="info-row">
+        <span class="info-label">Current Balance</span>
+        <span class="info-value" style="font-weight: bold; color: #28a745; font-size: 1.1rem;" id="currentBalance">₦0</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Referral Code</span>
+        <span class="info-value" id="refCode" style="font-family: monospace; background: #eee; padding: 2px 8px; border-radius: 4px;">-</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Account Status</span>
+        <span class="info-value" style="color: #28a745; font-weight: bold;">Active</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <div class="btn-group">
+        <button onclick="window.location.href='bank-details.html'" style="background: #ffc107; color: #333;">Add Bank Details</button>
+        <button onclick="viewWitdrawalHistory()" style="background: #28a745; color: #fff;">Withdrawal History</button>
+        <button onclick="goToDashboard()" style="background: #17a2b8; color: #fff;">Back to Dashboard</button>
+      </div>
+    </div>
+
+  </div>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabaseClient = supabase.createClient(
+    "https://rthpqfyeazputmufqkwd.supabase.co", 
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0aHBxZnllYXpwdXRtdWZxa3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjU2NDEsImV4cCI6MjA5MDIwMTY0MX0.j0XIfWSqyhnjA3q73hnoLbQOVpVJa_f8xPXb9EsgLGI"
+  );
+  async function loadAccountData() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+      window.location.href = "login.html";
+      return;
+    }
+    const { data: profile, error: profileError } = await supabaseClient
+      .from("users")
+      .select("*")
+      .eq("id", session.user.id)
+      .single();
+    if (profileError) {
+      console.error("Error loading profile:", profileError);
+      showError("Could not load account data.");
+      return;
+    }
+    // Populate user info
+    document.getElementById("fullName").innerText = `${profile.first_name} ${profile.last_name}`;
+    document.getElementById("userEmail").innerText = profile.email;
+    document.getElementById("userWhatsapp").innerText = profile.whatsapp || "N/A";
+    document.getElementById("userAddress").innerText = profile.address || "N/A";
+    document.getElementById("currentBalance").innerText = `₦${Number(profile.balance).toLocaleString()}`;
+    document.getElementById("refCode").innerText = profile.referral_code;
+    document.getElementById("memberSince").innerText = new Date(profile.created_at).toLocaleDateString();
+    // Fetch referral count
+    const { data: referrals, error: refError } = await supabaseClient
+      .from("referrals")
+      .select("id")
+      .eq("referrer_id", profile.id);
+    document.getElementById("referralCount").innerText = referrals?.length || 0;
+    // Calculate total earned (registration fee - paystack fee + referral bonuses)
+    const totalReferralEarnings = referrals?.reduce((sum, r) => sum + (Number(r.amount) || 0), 0) || 0;
+    document.getElementById("totalEarned").innerText = `₦${Number(totalReferralEarnings).toLocaleString()}`;
+    // Fetch withdrawal history
+    const { data: withdrawals } = await supabaseClient
+      .from("withdrawals")
+      .select("amount")
+      .eq("user_id", profile.id)
+      .eq("status", "approved");
+    const totalWithdrawn = withdrawals?.reduce((sum, w) => sum + Number(w.amount), 0) || 0;
+    document.getElementById("totalWithdrawn").innerText = `₦${Number(totalWithdrawn).toLocaleString()}`;
+  }
+  function viewWitdrawalHistory() {
+    window.location.href = "withdrawal-history.html";
+  }
+  function goToDashboard() {
+    window.location.href = "dashboard.html";
+  }
+  async function logout() {
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+  }
+ function toggleMenu() {
+    const nav = document.getElementById('navLinks');
+    
+    // This adds/removes the 'active' class
+    nav.classList.toggle('active');
+    
+    // Check your browser console (F12) to see if this message appears:
+    console.log("Menu toggled! Current classes:", nav.className);
+  }
+  loadAccountData();
+</script>
+<script src="scripts/toast.js"></script>
+</body>
+</html>

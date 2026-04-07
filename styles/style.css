@@ -1,0 +1,154 @@
+/* ===== RESET & BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* ===== SHARED NAV ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #007bff;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #64748b;
+  margin-left: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav a:hover {
+  color: #007bff;
+}
+
+/* Special styling for "Join Now" in nav */
+.nav a[href="signup.html"] {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 50px;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  text-align: center;
+  padding: 120px 20px 60px; /* Extra top padding for fixed nav */
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== CONTENT CONTAINER ===== */
+.container, .features {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ===== CARDS (For Terms & About) ===== */
+.card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  border: 1px solid #eef2f6;
+}
+
+.card h3 {
+  color: #1e293b;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.card p {
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* ===== ABOUT PAGE SPECIFIC (Features Grid) ===== */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* ===== CTA SECTION ===== */
+.cta {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-top: 1px solid #eef2f6;
+}
+
+.btn {
+  display: inline-block;
+  padding: 15px 35px;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav { padding: 0 5%; }
+  .nav a:not([href="signup.html"]) { display: none; } /* Hide minor links on mobile nav */
+  .hero h1 { font-size: 1.8rem; }
+}

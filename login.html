@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Circle Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Login to Dashboard</h2>
+        
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                <input type="email" id="email" required 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" required 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <div class="mt-2 flex items-center">
+                    <input type="checkbox" id="showPassword" class="mr-2">
+                    <label for="showPassword" class="text-sm text-gray-700">Show Password</label>
+                </div>
+            </div>
+
+            <button type="submit" id="loginBtn"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 font-semibold">
+                Sign In
+            </button>
+        </form>
+
+        <p class="mt-4 text-center text-sm text-gray-600">
+            <a href="#" id="forgotLink" class="text-blue-600 hover:underline">Forgot password?</a>
+        </p>
+
+        <div id="forgotPasswordSection" class="hidden bg-gray-50 border border-gray-200 rounded-lg p-6 mt-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Reset your password</h3>
+            <p class="text-sm text-gray-600 mb-4">Enter your email and we’ll send you a reset link.</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input type="email" id="resetEmail" placeholder="Email address"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button id="resetBtn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 font-semibold">
+                    Send Reset Link
+                </button>
+                <p class="text-sm text-gray-600 text-center">
+                    Remembered your password? <a href="#" id="backToLogin" class="text-blue-600 hover:underline">Back to login</a>
+                </p>
+            </div>
+        </div>
+
+        <p class="mt-4 text-center text-sm text-gray-600">
+            Don't have an account? <a href="signup.html" class="text-blue-600 hover:underline">Register here</a>
+        </p>
+    </div>
+
+    <script>
+        // ================= CONFIG =================
+        const supabaseClient = supabase.createClient(
+            "https://rthpqfyeazputmufqkwd.supabase.co", 
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0aHBxZnllYXpwdXRtdWZxa3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjU2NDEsImV4cCI6MjA5MDIwMTY0MX0.j0XIfWSqyhnjA3q73hnoLbQOVpVJa_f8xPXb9EsgLGI"
+        );
+
+        // ================= SHOW PASSWORD =================
+        document.getElementById('showPassword').addEventListener('change', function() {
+            const passwordField = document.getElementById('password');
+            passwordField.type = this.checked ? 'text' : 'password';
+        });
+
+        // ================= LOGIN LOGIC =================
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // UI Feedback
+            loginBtn.innerText = "Authenticating...";
+            loginBtn.disabled = true;
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 1. Attempt to sign in with Supabase Auth
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    showError(error.message);
+                    loginBtn.innerText = "Sign In";
+                    loginBtn.disabled = false;
+                    return;
+                }
+
+                // 2. Success! Supabase automatically handles the session/cookies
+                console.log("Login successful:", data.user.email);
+                window.location.href = "dashboard.html";
+
+            } catch (err) {
+                console.error("Login Error:", err);
+                showError("An unexpected error occurred.");
+                loginBtn.innerText = "Sign In";
+                loginBtn.disabled = false;
+            }
+        });
+
+        const forgotLink = document.getElementById('forgotLink');
+        const forgotPasswordSection = document.getElementById('forgotPasswordSection');
+        const backToLogin = document.getElementById('backToLogin');
+        const resetBtn = document.getElementById('resetBtn');
+
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            forgotPasswordSection.classList.remove('hidden');
+        });
+
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordSection.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        resetBtn.addEventListener('click', async () => {
+            const resetEmail = document.getElementById('resetEmail').value.trim();
+
+            if (!resetEmail) {
+                showWarning('Please enter your email address.');
+                return;
+            }
+
+            resetBtn.innerText = 'Sending...';
+            resetBtn.disabled = true;
+
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(resetEmail, {
+                redirectTo: `${window.location.origin}/login.html`
+            });
+
+            if (error) {
+                showError(error.message);
+                console.error('Reset error:', error);
+                resetBtn.innerText = 'Send Reset Link';
+                resetBtn.disabled = false;
+                return;
+            }
+
+            showSuccess('If your email is registered, a password reset link has been sent.');
+            resetBtn.innerText = 'Send Reset Link';
+            resetBtn.disabled = false;
+            forgotPasswordSection.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    </script>
+<script src="scripts/toast.js"></script>
+</body>
+</html>

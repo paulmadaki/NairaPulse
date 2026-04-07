@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NairaPulse - Earn & Play</title>
+  <meta name="description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+  <meta name="keywords" content="NairaPulse, earn money online, referral program, trivia games, online rewards">
+  <meta name="author" content="NairaPulse Team">
+  <meta property="og:title" content="NairaPulse - Earn Money Online by Referring Friends to Play Trivia Games">
+  <meta property="og:description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+  <meta property="og:image" content="https://nairapulse.com/images/og-image.png">
+  <meta property="og:url" content="https://nairapulse.com">
+  <meta property="og:description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NairaPulse - Earn Money Online by Referring Friends to Play Trivia Games">
+  <meta name="twitter:description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+  <meta property="facebook:title" content="NairaPulse - Earn Money Online by Referring Friends to Play Trivia Games">
+  <meta property="facebook:description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+  <link rel="icon" href="images/favicon-32x32.png">
+  
+  <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --text: #333;
+      --light-bg: #f4f6f9;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--light-bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* --- NAVIGATION --- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 5%;
+      height: 90px;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    /* Logo on the left */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      z-index: 1001;
+    }
+
+    .logo-img {
+      height: 70px;
+      width: 70px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* Text centered at the top */
+    .brand-name {
+      position: absolute;
+      top: 10px; /* Adjust this to move it higher or lower */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      pointer-events: none; /* Allows clicks to pass through if overlapping */
+    }
+
+    /* Desktop Links on the right */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-top: 20px; /* Lowers links so they don't crowd the top-center text */
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 600;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    .btn-nav {
+      background: var(--primary);
+      color: #fff !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Mobile Toggle */
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--primary);
+      margin-top: 20px;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      padding: 80px 20px 40px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    } 
+
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 36px); 
+      line-height: 1.3;
+      margin-bottom: 15px;
+      color: #1a1a1a;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+      max-width: 500px;
+    }
+
+    .notice {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 30px;
+      border: 1px solid #ffeeba;
+    }
+
+    .btn-main {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .btn-main:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    /* --- FEATURES GRID --- */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 60px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 40px 30px;
+      border-radius: 15px;
+      text-align: center;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+    }
+
+    .card:hover { transform: translateY(-10px); }
+    .card h3 { color: var(--primary); margin-bottom: 15px; }
+
+    /* --- STEPS SECTION --- */
+    .steps-container {
+      background: var(--white);
+      padding: 80px 5%;
+      text-align: center;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .step-item { padding: 20px; }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-weight: bold;
+    }
+
+    /* --- CTA --- */
+    .cta {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .cta h2 { margin-bottom: 20px; font-size: 32px; }
+
+    .btn-white {
+      background: white;
+      color: var(--primary);
+      padding: 15px 35px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .footer { text-align: center; padding: 40px; color: #888; font-size: 14px; }
+
+    /* --- MOBILE RESPONSIVENESS --- */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+
+      .nav-links {
+        position: fixed;
+        top: 90px;
+        left: -100%;
+        flex-direction: column;
+        background: white;
+        width: 100%;
+        height: calc(100vh - 90px);
+        padding: 40px;
+        transition: 0.4s;
+        box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+      }
+
+      .nav-links.active { left: 0; }
+      .nav-links a { width: 100%; text-align: center; font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="logo-container">
+    <img src="images/my_real_logo.JPG" alt="NairaPulse" class="logo-img">
+  </a>
+
+  <span class="brand-name">NairaPulse</span>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a id="joinLink" href="signup.html" class="btn-nav">Join Now</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Earn Daily by Referring Friends to Play Trivia</h1>
+  <p>Win airtime by answering questions and earn massive rewards by building your community.</p>
+  <div class="notice">
+    <strong>Notice:</strong> Old members must register a new account to access the updated reward system.
+  </div>
+  <a id="heroBtn" href="signup.html" class="btn-main">Get Started Today</a>
+</section>
+
+<section class="features">
+  <div class="card">
+    <h3>Play & Win</h3>
+    <p>Correct answers in our trivia games translate directly into airtime rewards for your phone.</p>
+  </div>
+  <div class="card">
+    <h3>Referral Engine</h3>
+    <p>Earn a generous commission for every friend you bring to the platform who joins the fun.</p>
+  </div>
+  <div class="card">
+    <h3>Easy Payouts</h3>
+    <p>No complicated processes. Withdraw your accumulated earnings directly to your local bank.</p>
+  </div>
+</section>
+
+<section class="steps-container">
+  <h2>How to Get Started</h2>
+  <div class="steps-grid">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <p>Register & pay a small activation fee.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <p>Play trivia games to win instant airtime.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <p>Invite friends using your unique link.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <p>Withdraw your earnings daily!</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Ready to boost your income?</h2>
+  <a id="ctaBtn" href="signup.html" class="btn-white">Create Your Account</a>
+</section>
+
+<footer class="footer">
+  &copy; 2026 NairaPulse. All rights reserved.
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+
+const params = new URLSearchParams(window.location.search);
+const ref = params.get("ref");
+if(ref){
+  const signupURL = "signup.html?ref=" + ref;
+  document.getElementById("joinLink").href = signupURL;
+  document.getElementById("heroBtn").href = signupURL;
+  document.getElementById("ctaBtn").href = signupURL;
+}
+</script>
+
+</body>
+</html>

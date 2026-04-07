@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Join NairaPulse and earn money online by referring your friends to play trivia games. Pay a small registration fee and start earning today!">
+<meta name="keywords" content="NairaPulse, earn money online, referral program, trivia games, online rewards">
+<meta name="author" content="NairaPulse Team">
+<link rel="icon" href="images/favicon-32x32.png">
+<title>Register</title>
+
+<style>
+/* ===== RESET & BASE ===== */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #334155;
+  min-height: 100vh;
+  padding-top: 80px; /* Space for fixed nav */
+  padding-bottom: 40px;
+}
+
+/* ===== NEW NAV ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-img {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #007bff;
+  text-transform: uppercase;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #64748b;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #007bff;
+}
+
+/* ===== MOBILE NAV ===== */
+.menu-btn {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #64748b;
+  margin-left: auto;
+}
+
+.close-btn {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #64748b;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+/* ===== REGISTER CARD ===== */
+.container {
+  background: #fff;
+  padding: 40px;
+  width: 90%;
+  max-width: 600px; /* Widened for 2 columns */
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 24px;
+  color: #1e293b;
+}
+
+.info-panel {
+  background: #eef6ff;
+  border: 1px solid #dbeafe;
+  padding: 22px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.info-panel h3 {
+  margin-bottom: 12px;
+  color: #0f172a;
+  font-size: 20px;
+}
+
+.info-panel p {
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.info-panel ul {
+  list-style: disc inside;
+  color: #475569;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.info-panel ul li {
+  margin-bottom: 10px;
+}
+
+.rate-box {
+  background: #f0f7ff;
+  border: 1px solid #cce3ff;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.rate-box span {
+  font-weight: 800;
+  color: #007bff;
+  font-size: 18px;
+}
+
+/* ===== GRID FORM ===== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 15px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+/* Make Email, Password, and Address full width */
+.full-width {
+  grid-column: span 2;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ===== BUTTON ===== */
+button {
+  width: 100%;
+  padding: 14px;
+  background: #007bff;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .menu-btn { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  }
+  .nav-links.active { display: flex; }
+  .nav-links.active .close-btn { display: block; }
+  .form-grid {
+    grid-template-columns: 1fr; /* Stack on mobile */
+  }
+  .full-width {
+    grid-column: span 1;
+  }
+  .container {
+    padding: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="nav">
+  <div class="nav-left">
+    <img src="images/my_real_logo.JPG" alt="NairaPulse Logo" class="logo-img">
+  </div>
+  <div class="logo">NairaPulse</div>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <div class="nav-links" id="navLinks">
+    <div class="close-btn" onclick="toggleMenu()">✕</div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="login.html">Login</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="info-panel">
+    <h3>Welcome to NairaPulse</h3>
+    <p>Join a growing online platform where users can participate in interactive activities and invite others to be part of the community.</p>
+    <ul>
+      <li>Access features after completing a one-time registration process.</li>
+      <li>Invite friends using your unique link and grow your network.</li>
+      <li>Participate in trivia games and fun activities.</li>
+      <li>Rewards and benefits may vary based on user activity.</li>
+    </ul>
+  </div>
+
+  <h2>Create Account</h2>
+  <p style="text-align:center; color:#64748b; margin-bottom: 20px; font-size:14px;">Fill in your details to get started</p>
+
+  <div class="rate-box">
+    Registration Fee: <span id="rate">Loading...</span>
+  </div>
+
+  <form id="regForm">
+    <div class="form-grid">
+      <div class="input-group">
+        <label>First Name</label>
+        <input type="text" id="fname" placeholder="John" required>
+      </div>
+
+      <div class="input-group">
+        <label>Last Name</label>
+        <input type="text" id="lname" placeholder="Doe" required>
+        </div>
+        
+
+      <div class="input-group full-width">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="email@example.com" required>
+      </div>
+
+      <div class="input-group">
+        <label>WhatsApp Number</label>
+        <input type="text" id="whatsapp" placeholder="080123..." required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+        <div style="margin-top: 5px;">
+          <input type="checkbox" id="showPassword" style="margin-right: 5px;">
+          <label for="showPassword" style="font-size: 12px; color: #666;">Show Password</label>
+        </div>
+      </div>
+
+      <div class="input-group full-width">
+        <label>Home Address</label>
+        <input type="text" id="address" placeholder="123 Street, City, State" required>
+      </div>
+    </div>
+
+    <p style="color:red; margin-bottom: 10px;">Please ensure your first and last names match your bank account details.</p>
+    <button type="submit">Register & Pay Now</button>
+  </form>
+
+  <div class="footer-text">
+    By registering, you agree to our <a href="terms.html" style="color:#007bff; text-decoration:none;">Terms & Conditions</a>.
+  </div>
+</div>
+
+<!-- Paystack Script -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+// ================= CONFIG =================
+
+const paystackKey = "pk_test_12df58e07e4fab48a969987ffe965bd683792a17";
+const VERIFY_URL = "https://rthpqfyeazputmufqkwd.supabase.co/functions/v1/verify-payment"; // function url
+
+let rate = 1500;
+let rateLoaded = false;
+
+
+// ================= FETCH RATE =================
+
+async function fetchRate(){
+  try{
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    const data = await res.json();
+
+    rate = Number (data.rates.NGN);
+    rateLoaded = true;
+
+    document.getElementById('rate').innerText =
+      "₦" + (rate * 2).toLocaleString();
+
+  }catch{
+    document.getElementById('rate').innerText = "₦3200";
+  }
+}
+fetchRate();
+
+// ================= SHOW PASSWORD =================
+document.getElementById('showPassword').addEventListener('change', function() {
+  const passwordField = document.getElementById('password');
+  passwordField.type = this.checked ? 'text' : 'password';
+});
+
+// ================= FORM SUBMIT =================
+
+document.getElementById('regForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const address = document.getElementById('address').value.trim();
+
+ const amount = Math.round(Number(rate) * 2 * 100);
+
+ console.log("Rate:", rate);
+console.log("Amount:", amount);
+
+if(!rateLoaded){
+  showWarning("Please wait, loading price...");
+  return;
+}
+
+if(!amount || isNaN(amount)){
+  showError("Invalid payment amount. Please refresh.");
+  return;
+}
+
+  PaystackPop.setup({
+    key: paystackKey,
+    email,
+    amount,
+
+   callback: function(response){
+
+  (async () => {
+    try{
+
+      const ref = new URLSearchParams(window.location.search).get('ref');
+
+      const payload = {
+        reference: response.reference,
+        email,
+        password,
+        fname,
+        lname,
+        whatsapp,
+        address,
+        ref
+      };
+
+      const res = await fetch(VERIFY_URL,{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if(data.success){
+        showSuccess("Registration successful!");
+       // localStorage.setItem("user_email", email);
+        window.location.href = "dashboard.html";
+      }else{
+        showError("Payment verification failed");
+      }
+
+    }catch(err){
+      console.error(err);
+      showError("Something went wrong");
+    }
+  })();
+
+}
+  }).openIframe();
+});
+
+// Mobile menu toggle
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+</script>
+
+<!-- TERMS LINK -->
+<div style="text-align: center; margin-top: 20px; font-size: 12px; color: #666;">
+  By registering, you agree to our <a href="terms.html" target="_blank">Terms and Conditions</a>.
+</div>
+
+<script src="scripts/toast.js"></script>
+</body>
+</html>
