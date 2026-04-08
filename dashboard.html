@@ -245,7 +245,7 @@ button{
     <a href="withdrawal-history.html">History</a>
     <a href="about.html">About</a>
     <a href="terms.html">Terms</a>
-    <a href="https://paulmadaki.github.io/GameHub2/" target="_blank">GameHub</a>
+    <a href="#" onclick="openTrivia()">GameHub</a>
     <a href="#" onclick="logout()" class="logout-btn">Logout</a>
   </div>
 </div>
@@ -476,6 +476,19 @@ async function logout() {
 }
 
 checkUser();
+</script>
+<script>
+  // Function to open GameHub in a new tab with a timestamp to prevent caching  
+function openTrivia() {
+
+  const timestamp = Date.now();
+
+  const url =
+  "https://paulmadaki.github.io/GameHub/?access=affiliate2026&time=" + timestamp;
+
+  window.open(url, "_blank");
+
+}
 </script>
 <script src="scripts/toast.js"></script>
 </body>
