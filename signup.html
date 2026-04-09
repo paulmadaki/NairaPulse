@@ -251,6 +251,43 @@ button:hover {
     padding: 25px;
   }
 }
+
+/* ===== LOADING SPINNER ===== */
+.spinner {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.spinner-circle {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 </head>
 
@@ -338,6 +375,14 @@ button:hover {
   </div>
 </div>
 
+<!-- LOADING SPINNER -->
+<div id="loadingSpinner" class="spinner">
+  <div class="spinner-content">
+    <div class="spinner-circle"></div>
+    <p>Processing your registration...</p>
+  </div>
+</div>
+
 <!-- Paystack Script -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
@@ -403,6 +448,11 @@ if(!amount || isNaN(amount)){
   return;
 }
 
+  // Show spinner and disable button
+  document.getElementById('loadingSpinner').style.display = 'flex';
+  document.querySelector('button[type="submit"]').disabled = true;
+  document.querySelector('button[type="submit"]').innerText = 'Processing...';
+
   PaystackPop.setup({
     key: paystackKey,
     email,
@@ -445,6 +495,11 @@ if(!amount || isNaN(amount)){
     }catch(err){
       console.error(err);
       showError("Something went wrong");
+    } finally {
+      // Hide spinner and re-enable button
+      document.getElementById('loadingSpinner').style.display = 'none';
+      document.querySelector('button[type="submit"]').disabled = false;
+      document.querySelector('button[type="submit"]').innerText = 'Register & Pay Now';
     }
   })();
 
