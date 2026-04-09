@@ -350,7 +350,7 @@ function updateUI(data) {
   document.getElementById("name").innerText = `${data.first_name} ${data.last_name}`;
   document.getElementById("email").innerText = data.email;
   document.getElementById("balance").innerText = Number(data.balance).toLocaleString();
-  const refLink = `signup.html?ref=${data.referral_code}`;  // Assuming referral_code is a unique code for each user in your database. I just made changes to this code.
+  const refLink = `${window.location.origin}/signup.html?ref=${data.referral_code}`;
   document.getElementById("refLink").innerText = refLink;
 }
 
